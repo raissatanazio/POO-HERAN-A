@@ -62,5 +62,13 @@ public class Personagem {
         }
     }
 
+     public void atacar(Personagem alvo){
+        int dano = this.getAtaque() - this.getDefesa();
+        if(dano < 0) dano = 1;
+        alvo.setVida(alvo.getVida() - dano);
+        System.out.println(this.getNome() + "ATACOU" + alvo.getNome() + "CAUSANDO" + dano + "DE DANO!");
+    }
+    
+
 
 }
