@@ -59,7 +59,12 @@ public class Personagem {
         this.defesa = defesa;
         if (this.defesa < 0) {
             this.defesa = 0;
+            System.out.println("VELÓRIO CONFIRMADO.");
         }
+    }
+
+    boolean estaVivo() {
+        return getVida() > 0;
     }
 
      public void atacar(Personagem alvo){
@@ -68,7 +73,8 @@ public class Personagem {
         alvo.setVida(alvo.getVida() - dano);
         System.out.println(this.getNome() + "ATACOU" + alvo.getNome() + "CAUSANDO" + dano + "DE DANO!");
     }
-    
 
-
+    void mostrarStatus() {
+        System.out.println(getNome() + " [Nível " + getNivel() + "] - Vida: " + getVida() + "/100");
+}
 }
