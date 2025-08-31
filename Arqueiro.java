@@ -80,8 +80,15 @@ public class Arqueiro extends Personagem {
         System.out.println("   " + getNome() + " ganha +" + defesaExtra + " de defesa temporária!");
         System.out.println("   Defesa atual: " + getDefesa());
     }
-    
 
+    public void usarFlechaParaCombateCorpoACorpo(Personagem alvo){
+        System.out.println("🤺⚔️ " + getNome() + " usa flechas para combate corpo a corpo!!");
+
+        int dano = (getAtaque() / 2) + AGILIDADE;
+        alvo.setVida(alvo.getVida() - dano);
+
+        System.out.println("Golpe ráido com flecha causa " + dano + " de dano em " + alvo.getNome());
+    }
         }
 
     
