@@ -89,6 +89,12 @@ public class Arqueiro extends Personagem {
 
         System.out.println("Golpe ráido com flecha causa " + dano + " de dano em " + alvo.getNome());
     }
+
+    public void recarregarFlechas(int quantidade) {
+        flechas += quantidade;
+        System.out.println("📦 " + getNome() + " recarregou " + quantidade + " flechas!");
+        System.out.println("   Total de flechas: " + flechas);
+    }
         }
 
     
