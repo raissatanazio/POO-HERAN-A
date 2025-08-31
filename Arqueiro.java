@@ -29,7 +29,7 @@ public class Arqueiro extends Personagem {
         int dano = danoBase - alvo.getDefesa();
         if(dano < 1){
             dano = 1;
-
+        }
             flechas--;
       
 
@@ -41,8 +41,9 @@ public class Arqueiro extends Personagem {
     alvo.setVida(alvo.getVida() - dano);
     System.out.println("🏹 " + getNome() + " atirou uma flecha em " + alvo.getNome() + " causando " + dano + " de dano !!" + (acertoCritico? "(CRÍTICO!!)" : "" ));
     System.out.println(" Flechas restantes: " + flechas);
+    
+        }
 
-}
     public void chuvaDeFlechas(Personagem alvo){
         if(flechas < 3){
             System.out.println("❌Flechas insuficientes! Partindo para ataque alternativo");
@@ -63,6 +64,7 @@ public class Arqueiro extends Personagem {
         System.out.println("   Flechas restantes: " + flechas);
     
         }
+    }
     
 
     public void atirarEmObjetosAoRedor(Personagem alvo){
@@ -116,7 +118,6 @@ public class Arqueiro extends Personagem {
         return flechas >= 2;
     }
 }
-        }
-
+    
     
 
