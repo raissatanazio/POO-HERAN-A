@@ -95,6 +95,14 @@ public class Arqueiro extends Personagem {
         System.out.println("📦 " + getNome() + " recarregou " + quantidade + " flechas!");
         System.out.println("   Total de flechas: " + flechas);
     }
+
+    @Override
+    public void mostrarStatus() {
+        super.mostrarStatus();
+        System.out.println("🏹 Flechas: " + flechas);
+        System.out.println("🎯 Precisão: +" + PRECISAO + " de dano");
+        System.out.println("🌀 Agilidade: +" + AGILIDADE + " em habilidades");
+    }
         }
 
     
