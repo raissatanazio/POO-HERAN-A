@@ -1,11 +1,8 @@
 public class CampoDeBatalha{
     public static void main(String[] args){
-        Mago p1 = new Mago("Merlin");
+        Mago merlin = new Mago("Merlin");
+        Arqueiro alec = new Arqueiro("Alec");
+
         
-        p1.estaVivo();
-        p1.ativarMarcadeCaim();
-        p1.mostrarStatus();
-
-
     }
 }
