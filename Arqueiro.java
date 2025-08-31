@@ -31,7 +31,22 @@ public class Arqueiro extends Personagem {
             dano = 1;
 
             flechas--;
-        }
+      
+
+    boolean acertoCritico = Math.random() < 0.15;
+    if(acertoCritico){
+        dano *= 2; 
+        System.out.println("☠️ ACERTO CRÍTICO!");
+    }
+    alvo.setVida(alvo.getVida() - dano);
+    System.out.println("🏹 " + getNome() + " atirou uma flecha em " + alvo.getNome() + " causando " + dano + " de dano !!" + (acertoCritico? "(CRÍTICO!!)" : "" ));
+    System.out.println(" Flechas restantes: " + flechas);
+
+    }
+
+
+
+    
     }
 
 }
