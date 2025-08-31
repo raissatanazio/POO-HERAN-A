@@ -10,5 +10,13 @@ public class Arqueiro extends Personagem {
         setAtaque(12);
         setDefesa(10);
     }
+    public int getFlechas() {
+        return flechas;
+    }
+
+    public void setFlechas(int flechas) {
+        this.flechas = flechas;
+        if (this.flechas < 0) this.flechas = 0;
+    }
 
 }
