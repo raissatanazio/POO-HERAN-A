@@ -61,11 +61,28 @@ public class Arqueiro extends Personagem {
         }
         System.out.println("   " + alvo.getNome() + " recebeu " + danoTotal + " de dano!");
         System.out.println("   Flechas restantes: " + flechas);
+    
+        }
+    
+
+    public void atirarEmObjetosAoRedor(Personagem alvo){
+        System.out.println("💥 " + getNome() + " atira em objetos ao redor!");
+        
+        // Dano por objetos caindo
+        int danoObjetos = 8 + AGILIDADE;
+        alvo.setVida(alvo.getVida() - danoObjetos);
+        
+        // Bônus defensivo temporário
+        int defesaExtra = 5;
+        setDefesa(getDefesa() + defesaExtra);
+        
+        System.out.println("   Objetos caem sobre " + alvo.getNome() + " causando " + danoObjetos + " de dano!");
+        System.out.println("   " + getNome() + " ganha +" + defesaExtra + " de defesa temporária!");
+        System.out.println("   Defesa atual: " + getDefesa());
     }
+    
 
         }
 
-    }
-    }
+    
 
-}
