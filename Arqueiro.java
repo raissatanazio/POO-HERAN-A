@@ -11,6 +11,4 @@ public class Arqueiro extends Personagem {
         setDefesa(10);
     }
 
-
-
 }
