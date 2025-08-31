@@ -103,6 +103,19 @@ public class Arqueiro extends Personagem {
         System.out.println("🎯 Precisão: +" + PRECISAO + " de dano");
         System.out.println("🌀 Agilidade: +" + AGILIDADE + " em habilidades");
     }
+
+    public boolean temFlechas() {
+        return flechas > 0;
+    }
+
+    public boolean podeUsarChuvaDeFlechas() {
+        return flechas >= 3;
+    }
+
+    public boolean podeUsarBarragemDefensiva() {
+        return flechas >= 2;
+    }
+}
         }
 
     
