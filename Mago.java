@@ -2,6 +2,7 @@ class Mago extends Personagem {
     private int magia;
     private boolean marcaAtiva;
     private int duracaoMarca;
+    private final int BOLADEFOGO = 25;
 
     public Mago(String nome){
         super(nome); //super chama o contrutor da mãe
@@ -41,6 +42,22 @@ class Mago extends Personagem {
             System.out.println("🪞 Os próximos ataques serão refletidos por " + duracaoMarca + " turnos!");
         } else {
             System.out.println("Magia insuficiente para ativar a Marca de Caim! (" + getMagia() + "/40)");
+        }
+    }
+
+    public void lancarBolaDeFogo(Personagem alvo) {
+        if (getMagia() >= BOLADEFOGO) {
+            int dano = getAtaque() * 2; // Dano dobrado
+            alvo.setVida(alvo.getVida() - dano);
+            setMagia(getMagia() - BOLADEFOGO);
+            
+            System.out.println("🔥 " + getNome() + " lançou BOLA DE FOGO em " + alvo.getNome() + "!");
+            System.out.println("   Causou " + dano + " de dano incinerante!");
+            System.out.println("   Mana gasta: " + BOLADEFOGO+ " | Mana restante: " + getMagia());
+        } else {
+            System.out.println("💤 Mana insuficiente para Bola de Fogo! (" + getMagia() + "/" + BOLADEFOGO + ")");
+            System.out.println("   Usando ataque normal...");
+            atacar(alvo); // Fallback para ataque normal
         }
     }
 
@@ -90,7 +107,7 @@ class Mago extends Personagem {
 @Override
     void mostrarStatus() {
         super.mostrarStatus();
-        System.out.println("Mana: " + getMagia() + "/100");
+        System.out.println("🪄 Mana: " + getMagia() + "/100");
         if (marcaAtiva) {
             System.out.println("🔮 Marca de Caim ativa! (" + duracaoMarca + " turnos restantes)");
         }
