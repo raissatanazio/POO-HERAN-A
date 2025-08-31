@@ -19,4 +19,19 @@ public class Arqueiro extends Personagem {
         if (this.flechas < 0) this.flechas = 0;
     }
 
+    @Override
+    public void atacar(Personagem alvo){
+        if(flechas <= 0){
+            usarFlechaParaCombateCorpoACorpo(alvo);
+            return;
+        }
+        int danoBase = getAtaque() + PRECISAO;
+        int dano = danoBase - alvo.getDefesa();
+        if(dano < 1){
+            dano = 1;
+
+            flechas--;
+        }
+    }
+
 }
