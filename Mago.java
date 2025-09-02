@@ -61,15 +61,15 @@ class Mago extends Personagem {
         }
     }
 
-    public void receberAtaque(Personagem atacante, int dano) {
+    public void receberAtaque(Personagem atacante) {
+        int dano = atacante.getAtaque() - this.getDefesa();
+        if (dano < 1) dano = 1;
         if (marcaAtiva && estaVivo()) {
-
-            int danoRefletido = dano;
-            atacante.setVida(atacante.getVida() - danoRefletido);
+            atacante.setVida(atacante.getVida() - dano);
             
             System.out.println("⚡MARCA DE CAIM ATIVADA!");
-            System.out.println("   " + getNome() + " refletiu " + danoRefletido + " de dano de volta para " + atacante.getNome() + "!");
-            System.out.println("   " + atacante.getNome() + " recebeu " + danoRefletido + " de dano!");
+            System.out.println("   " + getNome() + " refletiu " + dano + " de dano de volta para " + atacante.getNome() + "!");
+            System.out.println("   ❤️  " + getNome() + " permanece ileso!");
     
         duracaoMarca--;
             if (duracaoMarca <= 0) {
@@ -91,7 +91,7 @@ class Mago extends Personagem {
         // Se o alvo for um Mago com Marca de Caim, ele vai usar receberAtaque
         if (alvo instanceof Mago) {
             Mago magoAlvo = (Mago) alvo;
-            magoAlvo.receberAtaque(this, dano);
+            magoAlvo.receberAtaque(this);
         } else {
             alvo.setVida(alvo.getVida() - dano);
             System.out.println(getNome() + " atacou " + alvo.getNome() + " causando " + dano + " de dano!");
