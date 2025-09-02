@@ -11,7 +11,7 @@ class Mago extends Personagem {
         this.duracaoMarca = 0;
         setVida(100);
         setAtaque(15);
-        setDefesa(10);
+        setDefesa(0);
     }
 
     public int getMagia(){
@@ -36,7 +36,7 @@ class Mago extends Personagem {
     public void ativarMarcadeCaim(){
         if(getMagia() >= 40){
             marcaAtiva = true;
-            duracaoMarca = 2;
+            duracaoMarca = 3;
             setMagia(getMagia() - 40);
             System.out.println("🔮Mago(a)" + getNome() + " ativou a MARCA DE CAIM!");
             System.out.println("🪞 Os próximos ataques serão refletidos por " + duracaoMarca + " turnos!");
@@ -45,45 +45,53 @@ class Mago extends Personagem {
         }
     }
 
+   @Override
+    public void receberDano(Personagem atacante) {
+        if (marcaAtiva && estaVivo()) {
+            int dano = atacante.getAtaque() - this.getDefesa(); // ✅ CALCULA DANO
+            if (dano < 1) dano = 1;
+
+            // Reflete o dano para o atacante
+            atacante.setVida(atacante.getVida() - dano);
+
+            System.out.println("⚡ MARCA DE CAIM ATIVADA!");
+            System.out.println("   🔮 " + atacante.getNome() + " sofreu " + dano + " de dano refletido!");
+            System.out.println("   ❤️ " + getNome() + " permanece ileso!");
+
+            duracaoMarca--;
+            if (duracaoMarca <= 0) {
+                marcaAtiva = false;
+                System.out.println("   💨 A Marca de Caim se dissipou!");
+            }
+        } else {
+            // ✅ USA O MÉTODO DA CLASSE PAI
+            super.receberDano(atacante);
+        }
+    }
+
     public void lancarBolaDeFogo(Personagem alvo) {
         if (getMagia() >= BOLADEFOGO) {
             int dano = getAtaque() * 2; // Dano dobrado
-            alvo.setVida(alvo.getVida() - dano);
+            
+            // ✅ CALCULA DANO CONSIDERANDO DEFESA
+            int danoFinal = dano - alvo.getDefesa();
+            if (danoFinal < 1) danoFinal = 1;
+            
+            alvo.setVida(alvo.getVida() - danoFinal);
             setMagia(getMagia() - BOLADEFOGO);
             
             System.out.println("🔥 " + getNome() + " lançou BOLA DE FOGO em " + alvo.getNome() + "!");
-            System.out.println("   Causou " + dano + " de dano incinerante!");
-            System.out.println("   Mana gasta: " + BOLADEFOGO+ " | Mana restante: " + getMagia());
+            System.out.println("   Causou " + danoFinal + " de dano incinerante!");
+            System.out.println("   Mana gasta: " + BOLADEFOGO + " | Mana restante: " + getMagia());
         } else {
-            System.out.println("💤 Mana insuficiente para Bola de Fogo! (" + getMagia() + "/" + BOLADEFOGO + ")");
-            System.out.println("   Usando ataque normal...");
-            atacar(alvo); // Fallback para ataque normal
+            System.out.println("💤 Mana insuficiente! Usando ataque normal...");
+            atacar(alvo);
         }
     }
 
-    public void receberAtaque(Personagem atacante) {
-        int dano = atacante.getAtaque() - this.getDefesa();
-        if (dano < 1) dano = 1;
-        if (marcaAtiva && estaVivo()) {
-            atacante.setVida(atacante.getVida() - dano);
-            
-            System.out.println("⚡MARCA DE CAIM ATIVADA!");
-            System.out.println("   " + getNome() + " refletiu " + dano + " de dano de volta para " + atacante.getNome() + "!");
-            System.out.println("   ❤️  " + getNome() + " permanece ileso!");
-    
-        duracaoMarca--;
-            if (duracaoMarca <= 0) {
-                marcaAtiva = false;
-                System.out.println("A Marca de Caim se dissipou!");
-            } else {
-            // Ataque normal
-            setVida(getVida() - dano);
-            System.out.println(getNome() + " recebeu " + dano + " de dano de " + atacante.getNome() + "!");
-        }
-    }
-}
 
-    @Override
+
+ @Override
     public void atacar(Personagem alvo) {
         int dano = getAtaque() - alvo.getDefesa();
         if (dano < 0) dano = 1;
@@ -91,12 +99,13 @@ class Mago extends Personagem {
         // Se o alvo for um Mago com Marca de Caim, ele vai usar receberAtaque
         if (alvo instanceof Mago) {
             Mago magoAlvo = (Mago) alvo;
-            magoAlvo.receberAtaque(this);
+            magoAlvo.receberDano(this);
         } else {
             alvo.setVida(alvo.getVida() - dano);
             System.out.println(getNome() + " atacou " + alvo.getNome() + " causando " + dano + " de dano!");
         }
     }
+
 
     //recuperar magia
     void meditar() {
