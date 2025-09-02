@@ -68,16 +68,19 @@ public class Personagem {
     }
 
      public void atacar(Personagem alvo){
-        int dano = this.getAtaque() - this.getDefesa();
+        int dano = this.getAtaque() - alvo.getDefesa();
         if(dano < 0) dano = 1;
         alvo.setVida(alvo.getVida() - dano);
         System.out.println(this.getNome() + "ATACOU" + alvo.getNome() + "CAUSANDO" + dano + "DE DANO!");
     }
 
-     public void receberDano(int dano, Personagem atacante) {
-        setVida(getVida() - dano);
+      public void receberDano(Personagem atacante) {
+        int dano = atacante.getAtaque() - this.getDefesa(); 
+        if (dano < 1) dano = 1;
+        this.vida -= dano;
         System.out.println("💥 " + getNome() + " recebeu " + dano + " de dano de " + atacante.getNome() + "!");
-    }
+    
+}
 
     void mostrarStatus() {
         System.out.println(getNome() + " [Nível " + getNivel() + "] - Vida: " + getVida() + "/100");
