@@ -74,6 +74,11 @@ public class Personagem {
         System.out.println(this.getNome() + "ATACOU" + alvo.getNome() + "CAUSANDO" + dano + "DE DANO!");
     }
 
+     public void receberDano(int dano, Personagem atacante) {
+        setVida(getVida() - dano);
+        System.out.println("💥 " + getNome() + " recebeu " + dano + " de dano de " + atacante.getNome() + "!");
+    }
+
     void mostrarStatus() {
         System.out.println(getNome() + " [Nível " + getNivel() + "] - Vida: " + getVida() + "/100");
 }
