@@ -8,7 +8,7 @@ public class Arqueiro extends Personagem {
         this.flechas = 25;
         setVida(100);
         setAtaque(12);
-        setDefesa(10);
+        setDefesa(0);
     }
     public int getFlechas() {
         return flechas;
@@ -19,62 +19,64 @@ public class Arqueiro extends Personagem {
         if (this.flechas < 0) this.flechas = 0;
     }
 
-    @Override
-    public void atacar(Personagem alvo){
-        if(flechas <= 0){
+   @Override
+    public void atacar(Personagem alvo) {
+        if(flechas <= 0) {
             usarFlechaParaCombateCorpoACorpo(alvo);
             return;
         }
+        
         int danoBase = getAtaque() + PRECISAO;
-        int dano = danoBase - alvo.getDefesa();
-        if(dano < 1){
-            dano = 1;
-        }
-            flechas--;
-      
+        int dano = danoBase - alvo.getDefesa(); // ✅ CALCULA DANO CORRETAMENTE
+        if(dano < 1) dano = 1;
+        
+        flechas--;
 
-    boolean acertoCritico = Math.random() < 0.15;
-    if(acertoCritico){
-        dano *= 2; 
-        System.out.println("☠️ ACERTO CRÍTICO!");
+        boolean acertoCritico = Math.random() < 0.15;
+        if(acertoCritico) {
+            dano *= 2; 
+            System.out.println("☠️ ACERTO CRÍTICO!");
+        }
+        
+        // USA O MÉTODO DA CLASSE MÃE
+        super.atacar(alvo); // chama o ataque base que já calcula dano
+        System.out.println("🏹 " + getNome() + " atirou uma flecha em " + alvo.getNome() + 
+                         " causando " + dano + " de dano !!" + 
+                         (acertoCritico ? "(CRÍTICO!!)" : ""));
+        System.out.println("   Flechas restantes: " + flechas);
     }
-    alvo.setVida(alvo.getVida() - dano);
-    System.out.println("🏹 " + getNome() + " atirou uma flecha em " + alvo.getNome() + " causando " + dano + " de dano !!" + (acertoCritico? "(CRÍTICO!!)" : "" ));
-    System.out.println(" Flechas restantes: " + flechas);
-    
-        }
 
-    public void chuvaDeFlechas(Personagem alvo){
-        if(flechas < 3){
-            System.out.println("❌Flechas insuficientes! Partindo para ataque alternativo");
+    public void chuvaDeFlechas(Personagem alvo) {
+        if(flechas < 3) {
+            System.out.println("❌ Flechas insuficientes! Partindo para ataque alternativo");
             atirarEmObjetosAoRedor(alvo);
             return;
-        } else {
-            System.out.println("🌧️ " + getNome() + " usa CHUVA DE FLECHAS! ");
-            flechas -= 3;
+        }
+        
+        System.out.println("🌧️ " + getNome() + " usa CHUVA DE FLECHAS! ");
+        flechas -= 3;
 
-            int danoTotal = 0;
-            for (int i = 0; i < 3; i++) {
+        int danoTotal = 0;
+        for (int i = 0; i < 3; i++) {
             int dano = (getAtaque() + PRECISAO) - alvo.getDefesa();
             if (dano < 1) dano = 1;
             danoTotal += dano;
-            alvo.setVida(alvo.getVida() - dano);
+            alvo.receberDano(this); // ✅ DANO DIRETO
         }
+        
         System.out.println("   " + alvo.getNome() + " recebeu " + danoTotal + " de dano!");
         System.out.println("   Flechas restantes: " + flechas);
-    
-        }
     }
-    
+
 
     public void atirarEmObjetosAoRedor(Personagem alvo){
         System.out.println("💥 " + getNome() + " atira em objetos ao redor!");
         
-        // Dano por objetos caindo
+        // dano por objetos caindo
         int danoObjetos = 8 + AGILIDADE;
-        alvo.setVida(alvo.getVida() - danoObjetos);
+        alvo.receberDano(this);
         
-        // Bônus defensivo temporário
+        //bônus defensivo temporário
         int defesaExtra = 5;
         setDefesa(getDefesa() + defesaExtra);
         
@@ -87,9 +89,18 @@ public class Arqueiro extends Personagem {
         System.out.println("🤺⚔️ " + getNome() + " usa flechas para combate corpo a corpo!!");
 
         int dano = (getAtaque() / 2) + AGILIDADE;
-        alvo.setVida(alvo.getVida() - dano);
-
-        System.out.println("Golpe ráido com flecha causa " + dano + " de dano em " + alvo.getNome());
+        // Verifica se o alvo é um Mago com Marca de Caim ativa
+         if (alvo instanceof Mago) {
+        Mago magoAlvo = (Mago) alvo;
+        if (magoAlvo.getMarcaAtiva()) {
+            System.out.println("⚡ Ataque bloqueado pela Marca de Caim!");
+            System.out.println("   " + getNome() + " sofre " + dano + " de dano refletido!");
+            this.setVida(this.getVida() - dano);
+            return;
+        }
+    }//só executa se não houver Marca de Caim
+        alvo.receberDano(this);
+        System.out.println("Golpe rápido com flecha causa " + dano + " de dano em " + alvo.getNome());
     }
 
     public void recarregarFlechas(int quantidade) {
